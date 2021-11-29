@@ -1,20 +1,36 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+<div class="content">
+      <!-- <TheNavBar/> -->
+      <NavBar/>
+      <div class="switch-pages-container">
+         <router-view :key="$route.path"/>
+      </div>
+</div>
+  
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+//import TheNavbar from '@/components/TheNavBar.vue'
+import NavBar from '@/components/TheNavBar.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    NavBar
+    //TheNavbar
+    }
 }
 </script>
 
 <style>
+li{
+  list-style: none;
+}
+ul{
+      margin:0 0;
+    padding: 0 0;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
