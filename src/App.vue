@@ -31,6 +31,9 @@ ul{
       margin:0 0;
     padding: 0 0;
 }
+a{
+  text-decoration: none;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

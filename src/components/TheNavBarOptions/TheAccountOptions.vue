@@ -63,15 +63,37 @@ export default {
 <style scoped>
 .account-options-elements{
     display: flex;
+    justify-content: space-between;
 }
 .user-account-menu-wrapper{
     position: relative;
 }
 .account-manager-options{
     position: absolute;
-    right:0;
+    right:-490%;
     top:180%;
     
+}
+.manager-option{
+    display: flex;
+    cursor: pointer;
+    margin: 0.4em 0.4em;
+}
+.manager-option:hover{
+    background-color: rgba(201, 200, 200, 0.247);
+}
+.manager-option_name{
+    margin-left:0.2em;
+}
+.log-out-option{
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0.4em 0.4em;
+    text-align: left;
+    border-top: 1px solid rgba(204, 204, 204, 0.555);
+}
+.log-out-option:hover{
+    color: red;
 }
 /* .options-manager{
     margin:0 0;

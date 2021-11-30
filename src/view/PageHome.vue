@@ -1,7 +1,7 @@
 <template>
 
   <div class="page-home-container">
-    
+   
 
      <div class="home-page-content-container">
             <div class="home-page__left-side-content-container-desktop post-list-and-friends-header-mobile">

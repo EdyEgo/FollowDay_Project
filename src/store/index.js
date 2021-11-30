@@ -15,6 +15,7 @@ export default createStore({
     },
    state:{
        user_unsubscribe:null,
+       company_name:'FollowDay',
         auth_user:null,
         user_uId:null,
        chatback_categories:[
