@@ -14,16 +14,17 @@
         
          <div class="user-account-menu-wrapper">
              <div class="account-picture">
-                  <FontAwesome icon="portrait"/>
+                  <FontAwesome v-if="userAvatar == null" icon="portrait"/>
+                  <img :src="userAvatar" alt="user image" v-if="userAvatar != null" >
              </div>
              <div class="account-manager-options">
                  <ul class="options-manager">
-                     <li class="manager-option" v-for="option in options_manager" :key="option.name">
+                     <router-link class="manager-option" :to="{name:option.route_name}" v-for="option in options_manager" :key="option.name">
                            <span class="manager-option_icon">
                                  <FontAwesome :icon="option.icon"/>
                            </span>
                            <span class="manager-option_name">{{option.name}}</span>
-                     </li>
+                     </router-link>
                  </ul>
                  <div class="log-out-option">
                      <div class="log-out-manager-btn" @click="LogOut">Log out</div>
@@ -43,18 +44,24 @@ export default {
     data(){
         return{
             options_manager:[
-                {name:'Profile',icon:'portrait'},
-                {name:'Settings',icon:'cog'},
-                {name:'BookMarks',icon:'bookmark'}
+                {name:'Profile',icon:'portrait',route_name:'PageProfile'},
+                {name:'Settings',icon:'cog',route_name:''},
+                {name:'BookMarks',icon:'bookmark',route_name:''}
             ]
         }
+    },
+    computed:{
+      userAvatar(){
+        return  this.$store.state.auth?.profileAvatarUrl
+          
+      }
     },
    methods:{
        CallAddPostModal(){
            console.log('i was called to add a modal so you can add a post')
        },
-       LogOut(){
-
+     async LogOut(){
+        await this.$store.dispatch('auth/logOut')
        }
    }
 }

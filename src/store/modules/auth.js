@@ -1,4 +1,4 @@
-//import firebase from '@/helpers/firebase'
+import firebase from '@/helpers/firebase'
 
 //import useNotifications from '@/composables/useNotifications' // poinless
 export default {
@@ -114,8 +114,88 @@ export default {
     //     commit('setAuthUserUnsubscribe', null)
     //   }
     // }
+  async  initAuthentication({dispatch,commit}){
+     
+      // state.user_unsubscribe()
+       dispatch('unsubscribeAuthUserSnapshot')
+    return new Promise((resolve)=>{
+      const unsubscribe = firebase.auth().onAuthStateChanged(async (user)=>{
+        if(user){
+          const userCred = await firebase.auth()
+          const user = userCred.currentUser
+          const userEmail = user.email
+          const userId = user?.uid
+         commit('setUserIds',{user:userEmail,userId})
+        await dispatch('updateUserInfo',{userId,once:true})
+      //   this.$router.push({name:'HomePosts'})
+        resolve(user)
+        }
+
+      })
+       commit('setAuthUserUnsubscribe',unsubscribe)
+    })
+        
+        // state.user_unsubscribe = unsubscribe
+    },
+     updateUserInfo({commit},{userId,once = false}){
+       return new Promise((resolve)=>{
+          const unSubscribe = firebase.firestore().collection('users').doc(userId).onSnapshot((doc)=>{
+            if(once) unSubscribe()
+              
+            if(doc.exists){
+              const user_info = {...doc.data(),user_id:doc.id}
+              
+              commit('setUserHistoryObj',{user_info})
+              
+            }
+          
+          resolve(unSubscribe)
+        })
+      })
+     
+    },
+    async LogIn({state,commit},{email,password}){
+    
+      if(state.auth_user != null) return;
+       await firebase.auth().signInWithEmailAndPassword(email, password)
+      const userCred = await firebase.auth()
+    
+      
+      const user = userCred.currentUser?.email
+      const userId = userCred.currentUser?.uid
+      console.log('log in action',userCred,user,userId)
+      commit('setUserIds',{user,userId:userId})
+    },
+    async logOut({commit}){
+        await firebase.auth().signOut()
+          commit('setUserIds',{user:null,userId:null})
+    }, 
+
+   async unsubscribeAuthUserSnapshot({state,commit}){
+        if(state.user_unsubscribe) {
+          state.user_unsubscribe()
+           commit('setAuthUserUnsubscribe',null)
+        } 
+   }
+   
   },
   mutations: {
+    // remember_logedin_user(state,{user,userId}){
+    //   state.auth_user = user.email
+    //   state.user_uId = userId
+    // },
+    setUserHistoryObj(state,{user_info}){
+    
+         state.user_history = user_info
+    },
+    setUserIds(state,{user,userId}){
+      state.auth_user = user
+      state.user_uId = userId
+      console.log('wierd',state.auth_user,state.user_uId)
+    },
+    setAuthUserUnsubscribe(state,value_to_be_set){
+      state.user_unsubscribe = value_to_be_set
+    }
     // setAuthId (state, id) {
     //   state.authId = id
     // },

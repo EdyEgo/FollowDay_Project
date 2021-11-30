@@ -8,6 +8,19 @@ const routes=[
         component:()=>import(/* webpackChunkName: "HomePosts" */ '@/view/PageHome')
     },
     {
+        name:'PageProfile',
+        path:'/profile',
+        children:[
+            {
+                name:'ProfileActivity',
+                path:':activityType',
+                props:true,
+                component:()=>import(/* webpackChunkName: "HomePosts" */ '@/view/ProfileActivityContent')   
+            }
+        ],
+        component:()=>import(/* webpackChunkName: "HomePosts" */ '@/view/PageProfile')   
+    },
+    {
         name:'LogIn',
         path:'/login/:action',
         props:true,
@@ -31,12 +44,19 @@ const router = createRouter({
     routes
 })
 
-router.beforeEach(async (to,from)=>{
-    console.log('to',to,from)
-    if(to.meta?.doesNotRequireAuth !== true && store.state.auth_user === null){
+
+
+router.beforeEach(async (to)=>{
+   
+   await  store.dispatch('auth/initAuthentication')
+    console.log('shit',to.meta?.doesNotRequireAuth,store.state.auth.auth_user)
+    if(to.meta?.doesNotRequireAuth !== true && store.state.auth.auth_user == null){
+       
          return {name:'LogIn',params:{action:'login'}}
     }
-  //await this.$store.dispatch('Watch_state_auth_changes')
- // await store.dispatch('Watch_state_auth_changes')
+    // if(to.meta.doesNotRequireAuth && store.state.auth.auth_user != null){//to not be able to log in or register if you allready are
+    //     return {name:'HomePosts'}
+    // }
+ console.log(to,store)
 })
 export default router

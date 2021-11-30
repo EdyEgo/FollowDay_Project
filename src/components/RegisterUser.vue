@@ -39,7 +39,7 @@ export default {
     },
     methods:{
         SendRegisterInfos(){
-           //  this.$emit('registerInfo',{email:this.email,password:this.password,username:this.username,fullname:this.fullname})
+             this.$emit('registerInfo',{register_email:this.email,register_password:this.password,register_username:this.username,register_fullname:this.fullname})
         }
     }
 

@@ -12,8 +12,8 @@
                             <h3 class="logo-title">{{company_name}}</h3>
                             <VeeForm @submit="LogInUser"> 
                                 
-                                <AppFormField name="email" label="Email" :rules="`required|email`"/>
-                                <AppFormField  name="password" type="password" label="Password" :rules="`required|min:8`"/>
+                                <AppFormField name="email" label="Email" v-model="login_email" :rules="`required|email`"/>
+                                <AppFormField  name="password" type="password" v-model="login_password" label="Password" :rules="`required|min:8`"/>
                                 <button class="login-submit">Login</button>
                             </VeeForm>
                             <div class="or-line-choose-diff-login-method">
@@ -36,7 +36,7 @@
                      </div>
                  </div>
              </div>
-              <RegisterUser :action="action"/>
+              <RegisterUser @registerInfo="Register_User" :action="action"/>
 
          </div>
   </div>
@@ -55,19 +55,36 @@ export default {
   data(){
       return{
           company_name:this.$store.state.company_name,
-          change_action:this.action
+          change_action:this.action,
+          login_email:'',
+          login_password:'',
+ //         register_email:'',
+    //      register_password:''
+            // register_username:'',
+            // register_fullname:''
+         
       }
   },
   computed:{
     
   },
   methods:{
-      LogInUser(){
-       console.log('log in is working')
+     async LogInUser(){
+      
+       try{
+          await this.$store.dispatch('auth/LogIn',{email:this.login_email,password:this.login_password})
+           this.login_email = ''
+           this.login_password = ''
+           this.$router.push({name:'HomePosts'})
+       }catch(err){
+          console.log('log in error',err)
+       }
+       
       },
-      SwitchToPages(){
-            this.change_action = 'register'
-      }
+      Register_User(event){
+         console.log('register event is :',event)
+      },
+
   }
 }
 </script>
