@@ -27,6 +27,7 @@
         </div>
         <div class="profile-activity-content-switch">
             <div class="content-switch__tabs">
+               
                 <ul class="tabs-activity-list">
                        <router-link :to="{name:'ProfileActivity', params:{activityType:'posts',ids_array:user_infos.posts}}">Posts</router-link>
                        <router-link :to="{name:'ProfileActivity' , params:{activityType:'bookmarks',ids_array:user_infos.posts_bookmarks}}">Saved</router-link>
@@ -57,7 +58,17 @@ export default {
                following:auth_module.following || []
            }
        },
-       AvatarUrl(){ return this.$store.state.auth?.profileAvatarUrl}
+       AvatarUrl(){ return this.$store.state.auth?.profileAvatarUrl},
+    //     Test_of(){
+    //        const arr = [{id:'hey'},{id:'yo'},3,4];
+    //        const somet = [{id:'hoho'},{id:'lolo'}]
+    //        arr.push(...somet)
+    //        console.log('make it something',arr)
+    //        for(const file of arr){
+    //            console.log('file is ',file)
+    //        }
+    //        return 1
+    //    }
    }
 }
 </script>
