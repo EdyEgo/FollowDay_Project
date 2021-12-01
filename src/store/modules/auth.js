@@ -6,7 +6,17 @@ export default {
   state: {
     authId: null,
     authUserUnsubscribe: null,
-    authObserverUnsubscribe: null
+    authObserverUnsubscribe: null,
+    loged_in_user_obj:{
+      loged_all_post:false,
+      loged_all_bookmarks:false,
+      bookmarksViewed:[
+
+      ]
+    },
+    // saved_users_objects:{
+    //   some_random_user_id_name:{}
+    // }
   },
   getters: {
     // authUser: (state, getters, rootState, rootGetters) => {
@@ -114,6 +124,22 @@ export default {
     //     commit('setAuthUserUnsubscribe', null)
     //   }
     // }
+
+   async find_loged_in_user_obj({commit},{userId}){
+         return new Promise((resolve)=>{
+             const find_user_obj_in_database = async ()=>{
+                   const data_base_check = await firebase.firestore().collection('users').doc(userId).get()
+                   if(data_base_check.exist){
+                      const user_obj = {id:data_base_check.id,...data_base_check.data()}
+                      commit('add_to_loged_user_object',{user_obj})
+                   }
+             }
+             find_user_obj_in_database()
+             resolve(true)
+            
+         })
+   },// pointless
+
   async  initAuthentication({dispatch,commit}){
      
       // state.user_unsubscribe()
@@ -125,6 +151,8 @@ export default {
           const user = userCred.currentUser
           const userEmail = user.email
           const userId = user?.uid
+          // here go in store and take the user obj and store in state.loged_in_user_obj
+        // await dispatch('find_loged_in_user_obj',{userId})
          commit('setUserIds',{user:userEmail,userId})
         await dispatch('updateUserInfo',{userId,once:true})
       //   this.$router.push({name:'HomePosts'})
@@ -176,6 +204,9 @@ export default {
           state.user_unsubscribe()
            commit('setAuthUserUnsubscribe',null)
         } 
+   },
+   write_auth_bookmarks_view_posts({commit},{posts_objects_found}){
+          commit('mutate_loged_user_viewed_bookmarks',{posts_objects_found})
    }
    
   },
@@ -186,7 +217,8 @@ export default {
     // },
     setUserHistoryObj(state,{user_info}){
     
-         state.user_history = user_info
+       //  state.user_history = user_info
+       state.loged_in_user_obj = {...state.loged_in_user_obj,...user_info}
     },
     setUserIds(state,{user,userId}){
       state.auth_user = user
@@ -195,7 +227,14 @@ export default {
     },
     setAuthUserUnsubscribe(state,value_to_be_set){
       state.user_unsubscribe = value_to_be_set
+    },
+    add_to_loged_user_object(state,{user_obj}){
+           state.loged_in_user_obj = {...user_obj}
+    },// poitless
+    mutate_loged_user_viewed_bookmarks(state,{posts_objects_found}){
+             state.loged_in_user_obj.bookmarksViewed.push(...posts_objects_found)
     }
+
     // setAuthId (state, id) {
     //   state.authId = id
     // },

@@ -11,7 +11,12 @@ export default {
             //             id:'sss',
             //             pictureUrls:[]
             //         }
-            //     ]
+            //     ],
+                //bookmarksViewed:[// incorrect only you have acces to them go in auth_user_history
+                      {
+
+                      }
+             //  ]
             // },
             
 
@@ -43,7 +48,7 @@ export default {
                 resolve(user_obj)
             })
     },
-    async getPostsFromDataBase({commit},{quantity,postsIds,userId,getCollection}){
+    async getPostsFromDataBase({commit,dispatch},{quantity,postsIds,userId = '',getCollection = 'posts',forTypeBookmarksAuth = false,resorseHasNoContent = false}){
         return new Promise((resolve)=>{// use write_user_to_other_users_viewed(state,{user_obj})
             const return_all_req_posts = async()=>{
                 let posts_number_fetched = 0
@@ -52,14 +57,20 @@ export default {
                 for(const postId of postsIds){
                     posts_number_fetched += 1
                     if(posts_number_fetched >= quantity) break
-                    const post_database = await firebase.firestore().collection(getCollection).doc(postId).get()
-                    console.log('hjello',post_database,postId)
+                    const post_database = await firebase.firestore().collection(getCollection).doc(postId.trim()).get()
+                    
                     if(post_database.exists){
-                        console.log('did ya find it son ??',post_database.data())
+                       
                         const post_object = {id:post_database.id,...post_database.data()}
                         posts_objects_found.push(post_object)
                       
                     }
+                }
+
+                if(forTypeBookmarksAuth && resorseHasNoContent){
+                  // make here an action to write the posts to auth loged_in_user_obj.bookmarksViewed
+                  dispatch('auth/write_auth_bookmarks_view_posts',{posts_objects_found},{root:true})
+                    return 
                 }
                 commit('write_user_postsViewed',{posts_objects:posts_objects_found,userId})
                 return posts_objects_found
@@ -98,7 +109,7 @@ export default {
             // resolve(true)
       //   })
      },
-     async getNextPostsById(){
+     async getNextPostsByViewdPost_UserId(){// compare postsIds with viewed posts id in user_object that you wanna post view
 
      }
     },

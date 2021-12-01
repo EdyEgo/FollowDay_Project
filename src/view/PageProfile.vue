@@ -13,9 +13,32 @@
                     <span class="edits-section__user-settings-cog"><FontAwesome icon="cog"/></span>
                 </div>
                 <div class="profile-infos__user-following-section desktop">
-                    <span class="following-section__posts-number">{{user_infos.posts.length}}</span>
-                     <span class="following-section__followers-number">{{user_infos.followers.length}}</span>
-                     <span class="following-section__following-number">{{user_infos.following.length}}</span>
+                    <span class="following-section__posts-number">
+                        <app-items-number itemName="posts"
+                         :itemNumber="user_infos.posts.length"
+                          :custom_class_container="'posts-number-span-container'"
+                          :custom_class_item_number="'posts-number-items'"
+                          :custom_class_item_name="'posts-name-span'"
+                         />
+                    </span>
+                     <span class="following-section__followers-number">
+                         <app-items-number itemName="followers"
+                          :itemNumber="user_infos.followers.length"
+                          :custom_class_container="'followers-number-span-container'"
+                          :custom_class_item_number="'followers-number-items'"
+                          :custom_class_item_name="'followers-name-span'"                         
+                          />
+                         
+                     </span>
+                     <span class="following-section__following-number">
+                         <app-items-number itemName="following" 
+                         :itemNumber="user_infos.following.length"
+                          :custom_class_container="'following-number-span-container'"
+                          :custom_class_item_number="'following-number-items'"
+                          :custom_class_item_name="'following-name-span'"
+                         />
+                         
+                     </span>
 
                 </div>
                 <div class="profile-infos__fullname-section">
@@ -48,10 +71,12 @@
 export default {
    computed:{
        user_infos(){
-           const auth_module = this.$store.state.auth
+          // const auth_module = this.$store.state.auth.user_history//.loged_in_user_obj
+            const auth_module = this.$store.state.auth.loged_in_user_obj
+           console.log('user_infos are',auth_module,auth_module.loged_in_user_obj)
            return {// user_history
-               username:auth_module.username || 'Username Anonim',
-               fullname:auth_module.fullname || 'Full Name Anonim',
+               username:auth_module.username || ' Anonim',
+               fullname:auth_module.fullname || ' Anonimus',
                posts:auth_module.posts || [],// remember to take .length
                posts_bookmarks:auth_module.posts_bookmarks || [],
                followers:auth_module.followers || [],
