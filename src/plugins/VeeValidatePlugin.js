@@ -13,8 +13,8 @@ export default (app)=> {
     configure({
         generateMessage:localize('en',{
                messages:{
-                   required:'{field} this field is veeeeeery required',
-                   email: '{field} must be a sooo valid email',
+                   required:'{field} this field is required',
+                   email: '{field} must be a valid email',
                    min: '{field} must be a minimum of 0:{min} characters',
                    url: '{field} must be a valid URL'
                }

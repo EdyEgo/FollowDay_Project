@@ -7,16 +7,24 @@ import posts from './modules/posts'
 import users from './modules/users'
 import auth from './modules/auth'
 
+// registered account to play with
+// email:'wraith.ttv@gmail.com',password:'300pplInVan'
+// wraith.ttv@gmail.com 
+//  300pplInVan
+
 export default createStore({
     modules:{
         posts,
         users,
         auth
     },
-   state:{
+   state:{ 
+
        user_unsubscribe:null,
+       company_name:'FollowDay',
         auth_user:null,
         user_uId:null,
+        profileAvatarUrl:'',
        chatback_categories:[
            {
                id:'brlp_post',

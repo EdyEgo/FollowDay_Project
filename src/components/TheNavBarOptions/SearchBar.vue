@@ -1,16 +1,18 @@
 <template>
    <div class="search-bar-container">
-       <div class="search-bar-border-eye-visible">
-               <FontAwesome icon="search"/>
+       <div class="search-bar-border-eye-visible" v-click-outside="()=>{users_results_are_fetching = false}">
+               <FontAwesome icon="search" class="search-icon-fa" />
+               <!--  @blur="()=>{users_results_are_fetching = false}"  -->
              <input type="text" class="search-input-bar" v-model="search_text"
-                placeholder="Search" @blur="()=>{users_results_are_fetching = false}" 
+                placeholder="Search"
                 @change="HanndleChangeSearch" v-bind="$attrs" @focus="()=>{users_results_are_fetching = true}">
-             <span class="cancel-search-menu-btn">
+             <span class="cancel-search-menu-btn"  v-show="users_results_are_fetching">
                  x
              </span>
+             <span class="cancel-search-menu-btn place-holder-cancel-search-btn" v-show="!users_results_are_fetching">x</span>
        </div>
 
-       <div class="users_found-toggle-container" v-if="users_found.length >= 1">
+       <div class="users_found-toggle-container results-container-search" v-if="users_found.length >= 1">
            <div v-if="search_text === ''" class="last_searched_users">
                <div class="users-found-header">
                    <div class="users-searched-title">History</div>
@@ -37,7 +39,7 @@
 
            </div>
        </div>
-       <div class="users_found-spinner-login-on-focus" v-if="users_results_are_fetching">
+       <div class="users_found-spinner-login-on-focus results-container-search" v-if="users_results_are_fetching">
            <p class="info-fetching-results">Results are about to pop up</p>
        </div>
        
@@ -80,19 +82,43 @@ export default {
 
              
 
-         }
+         },
+        //  CancelSearchFocus(){
+        //   //   this.users_results_are_fetching = false
+
+        //  }
     }
 
 }
 </script>
 
-<style>
+<style scoped>
+.search-bar-container{
+    font-size:smaller;
+}
 .search-bar-border-eye-visible{
-    border: 1px solid black;
+    border: 1px solid #ccc;
+    display: flex; 
 }
 .search-input-bar{
  border: none;
  outline: none;
+}
+.results-container-search{
+    position: absolute;
+    
+}
+.search-icon-fa,.cancel-search-menu-btn{
+    color: #ccc;
+    transition: all 0.2s ease;
+}
+.cancel-search-menu-btn:hover{
+    cursor:default;
+    color:rgb(112, 112, 112)
+}
+.place-holder-cancel-search-btn{
+    visibility: hidden;
+    /* opacity: 0; */
 }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="nav-bar">
-      
-          <div class="nav-bar-container"> 
+      <!-- v-if="user_is_loged_in != null" -->
+          <div class="nav-bar-container loged-in-user-nav" v-if="user_is_loged_in"> 
               <router-link :to="{name:'HomePosts'}" class="logo-container">
                     FollowDay Logo
               </router-link >
@@ -11,7 +11,6 @@
 
               <div class="account-options">
                  <TheAccountOptions/>
-
               </div>
 
           </div>
@@ -23,16 +22,41 @@ import TheAccountOptions from '@/components/TheNavBarOptions/TheAccountOptions'
 import TheSearchBar from '@/components/TheNavBarOptions/SearchBar'
 export default {
     components:{
-       TheAccountOptions,
+      TheAccountOptions,
        TheSearchBar
+    },
+    computed:{
+      user_is_loged_in(){
+        //  const auth_user = this.$store.state.auth.auth_user
+        const auth_user = this.$store.state.auth.loged_in_user_obj.id
+          if(auth_user) return true
+            return false
+          }
+    },
+    data(){
+        return{
+          //  user_is_loged_in:this.$store.state.auth.auth_user
+        }
     }
 
 }
 </script>
 
 <style scoped>
+.nav-bar{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
 .nav-bar-container{
  display: flex;
  justify-content: space-between;
+ width: 80%;
 }
+.logo-container,
+
+.account-options{
+ width: 18%;
+}
+
 </style>

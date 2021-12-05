@@ -6,6 +6,8 @@ import store from '@/store'
 import router from '@/router'
 import VeeValidate from '@/plugins/VeeValidatePlugin'
 import FontAwesome from '@/plugins/FontAwesome'
+import ClickOutSideDirective from '@/plugins/ClickOutSideDirective'
+import './assets/tailwind.css'
 
 firebase.initializeApp(firebaseConfig)
 
@@ -16,6 +18,7 @@ follow_day.use(store)
 follow_day.use(router)
 follow_day.use(VeeValidate)
 follow_day.use(FontAwesome)
+follow_day.use(ClickOutSideDirective)
 
 const requireComponent = require.context('./components', true, /App[A-Z]\w+\.(vue|js)$/)
 requireComponent.keys().forEach(function (fileName) {
